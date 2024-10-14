@@ -1,89 +1,51 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+// Wait for the DOM to fully load before running the script
+document.addEventListener('DOMContentLoaded', () => {
+    // Select DOM elements
+    const addButton = document.getElementById('add-task-btn'); // Button to add tasks
+    const taskInput = document.getElementById('task-input'); // Input field for new tasks
+    const taskList = document.getElementById('task-list'); // List to display tasks
 
-/* To-Do App Container */
-#todo-app {
-    width: 100%;
-    max-width: 400px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+    // Function to add a new task
+    const addTask = () => {
+        // Get and trim the value from the input field
+        const taskText = taskInput.value.trim();
 
-/* Input Field */
-#task-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
-}
+        // Check if the input is not empty
+        if (taskText === "") {
+            alert("Please enter a task."); // Alert if input is empty
+            return; // Exit the function if no task is provided
+        }
 
-#task-input:focus {
-    outline: none;
-    border-color: #007bff;
-}
+        // Create a new list item
+        const listItem = document.createElement('li');
+        listItem.textContent = taskText; // Set text of list item
 
-/* Add Task Button */
-#add-task-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        // Create a remove button
+        const removeButton = document.createElement('button');
+        removeButton.textContent = "Remove"; // Set button text
+        removeButton.className = 'remove-btn'; // Set button class for styling
 
-#add-task-btn:hover {
-    background-color: #0056b3;
-}
+        // Attach click event to the remove button
+        removeButton.onclick = () => {
+            taskList.removeChild(listItem); // Remove the task from the list
+        };
 
-/* Task List */
-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
+        // Append the remove button to the list item
+        listItem.appendChild(removeButton);
+        // Append the list item to the task list
+        taskList.appendChild(listItem);
 
-li {
-    background-color: #eeeeee;
-    padding: 10px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
+        // Clear the input field
+        taskInput.value = '';
+    };
 
-li:hover {
-    background-color: #e0e0e0;
-}
+    // Attach event listener to the add button
+    addButton.addEventListener('click', addTask);
 
-
-.remove-btn {
-    cursor: pointer;
-    background-color: #ff6347;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-    transition: background-color 0.3s ease;
-}
-
-.remove-btn:hover {
-    background-color: #d9534f;
-}
+    // Attach event listener to allow adding task with Enter key
+    taskInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            addTask(); // Call addTask when Enter is pressed
+        }
+    });
+});
